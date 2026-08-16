@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Products - Anime Store</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- ✅ Fixed Navbar -->
+  <nav class="navbar">
+    <a href="home.html">Home</a>
+    <a href="products.html">Products</a>
+    <a href="cart.html">Cart</a>
+    <a href="index.html">Logout</a>
+  </nav>
+
+  <!-- ✅ Background Video -->
+  <video class="bg-video" autoplay muted loop playsinline>
+    <source src="assets/blade.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+
+  <!-- ✅ Product Content Over Video -->
+  <div class="container content-overlay">
+    <h1>Our Anime Products</h1>
+    <div class="product-grid" id="product-list">
+      <!-- Products will be injected here by JS -->
+    </div>
+  </div>
+
+  <script>
+    const products = [
+      { id: 1, name: "Naruto T-Shirt", price: 499, image: "assets/images/naruto_tshirt.jpeg" },
+      { id: 2, name: "Demon Slayer Hoodie", price: 899, image: "assets/images/demon_slayer_hoodie.jpeg" },
+      { id: 3, name: "Attack on Titan Mug", price: 299, image: "assets/images/aot_mug.jpeg" },
+      { id: 4, name: "One Piece Poster", price: 199, image: "assets/images/one_piece_poster.jpeg" },
+      { id: 5, name: "JJK Keychain", price: 149, image: "assets/images/jjk_keychain.jpeg" },
+      { id: 6, name: "Anime Mousepad", price: 399, image: "assets/images/anime_mousepad.jpeg" }
+    ];
+
+    const container = document.getElementById("product-list");
+
+    products.forEach(product => {
+      const div = document.createElement("div");
+      div.className = "product-card";
+      div.innerHTML = `
+        <img src="${product.image}" alt="${product.name}" />
+        <h3>${product.name}</h3>
+        <p>₹${product.price}</p>
+        <button onclick="addToCart(${product.id})">Add to Cart</button>
+      `;
+      container.appendChild(div);
+    });
+
+    function addToCart(id) {
+      const selected = products.find(p => p.id === id);
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      const existing = cart.find(item => item.id === id);
+      if (existing) {
+        existing.quantity += 1;
+      } else {
+        cart.push({ ...selected, quantity: 1 });
+      }
+      localStorage.setItem("cart", JSON.stringify(cart));
+      alert(`${selected.name} added to cart`);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cart - Anime Store</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- ✅ Fixed Navbar -->
+  <nav class="navbar">
+    <a href="home.html">Home</a>
+    <a href="products.html">Products</a>
+    <a href="cart.html">Cart</a>
+    <a href="index.html">Logout</a>
+  </nav>
+
+  <!-- ✅ Background Video -->
+  <video class="bg-video" autoplay muted loop playsinline>
+    <source src="assets/blade.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+
+  <!-- ✅ Cart Content Appears OVER Video -->
+  <div class="container content-overlay">
+    <h1>Your Cart</h1>
+    <div id="cart-items"></div>
+    <h2 id="total-price"></h2>
+    <button onclick="checkout()">Checkout</button>
+  </div>
+
+  <script>
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const container = document.getElementById("cart-items");
+  const totalDisplay = document.getElementById("total-price");
+
+  function renderCart() {
+    container.innerHTML = "";
+    let total = 0;
+
+    cart.forEach((item, index) => {
+      const div = document.createElement("div");
+      div.className = "cart-item";
+      div.innerHTML = `
+        <img src="${item.image}" width="80">
+        <strong>${item.name}</strong><br>₹${item.price}
+        <div class="quantity-controls">
+          <button onclick="changeQty(${index}, -1)">−</button>
+          <span>${item.quantity}</span>
+          <button onclick="changeQty(${index}, 1)">+</button>
+        </div>
+        <button class="remove-btn" onclick="remove(${index})">Remove</button>
+      `;
+
+      container.appendChild(div);
+      total += item.price * item.quantity;
+    });
+
+    totalDisplay.innerText = "Total: ₹" + total;
+  }
+
+  function changeQty(index, delta) {
+    cart[index].quantity += delta;
+    if (cart[index].quantity <= 0) {
+      cart.splice(index, 1);
+    }
+    localStorage.setItem("cart", JSON.stringify(cart));
+    renderCart();
+  }
+
+  function remove(index) {
+    cart.splice(index, 1);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    renderCart();
+  }
+
+  function checkout() {
+    fetch("http://localhost:3000/add-to-cart", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ cart })
+    })
+    .then(response => response.text())
+    .then(data => {
+      alert("Checkout successful! Cart saved to DB.");
+      localStorage.removeItem("cart");
+      renderCart();
+    })
+    .catch(err => {
+      console.error("Checkout failed:", err);
+      alert("Failed to save cart");
+    });
+  }
+
+  renderCart();
+</script>
+
+</body>
+</html>
