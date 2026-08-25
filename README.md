@@ -157,17 +157,12 @@ Open the frontend through a local development server and access the application 
 
 ## Screenshots
 
-### Home Page
-![Home Page](frontend/assets/screenshots/home.png)
+## Screenshots
 
-### Login
-![Login](frontend/assets/screenshots/login.png)
-
-### Products
-![Products](frontend/assets/screenshots/products.png)
-
-### Shopping Cart
-![Shopping Cart](frontend/assets/screenshots/cart.png)
+- [Home Page](frontend/assets/screenshots/home.png) — Main anime-themed storefront.
+- [Authentication](frontend/assets/screenshots/login.png) — User registration and login.
+- [Products](frontend/assets/screenshots/products.png) — Browse available merchandise.
+- [Shopping Cart](frontend/assets/screenshots/cart.png) — Review and manage selected products.
 
 ## Future Improvements
 
