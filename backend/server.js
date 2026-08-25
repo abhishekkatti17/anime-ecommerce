@@ -1,4 +1,4 @@
-  // Node.js Express Serverconst express = require('express');
+  // Node.js Express Serverconst express = require
   const express = require('express'); // ✅ This is missing
   const mysql = require('mysql2');
   const session = require('express-session');
